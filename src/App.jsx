@@ -50,10 +50,10 @@ function App() {
             <Route
               path="AI_Radiologist/Upload"
               element={
-                // <ProtectedRoute>
-                //   <Upload />
-                // </ProtectedRoute>
-                <Upload />
+                <ProtectedRoute>
+                  <Upload />
+                </ProtectedRoute>
+                // <Upload />
               }
             />
             <Route path="AI_Radiologist/NavBar" element={<NavBar />} />
