@@ -12,7 +12,7 @@ const ErrorPage = () => {
         </p>
         <div className="d-flex justify-content-center gap-3">
           <Link
-            to="/AI_Radiologist"
+            to="/"
             className="btn btn-outline-secondary px-4 py-2"
           >
             Return Home

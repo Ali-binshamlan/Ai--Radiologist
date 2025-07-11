@@ -38,7 +38,7 @@ const Login = () => {
     if (user.user_type === "admin") {
       return <Navigate to="/AI_Radiologist/AdminPanel" />;
     } else if (user.user_type === "user") {
-      return <Navigate to="/AI_Radiologist" />;
+      return <Navigate to="/AI_Radiologist/Upload" />;
     } else {
       return null;
     }
