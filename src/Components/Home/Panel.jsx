@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Image1 from "../../assets/Images/background.png";
 import Image2 from "../../assets/Images/spark,background.png";
-import "../../assets/Styling/Panel.css";
+import "../../assets/Styling/panel.css";
 import UploadButton from "../UploadButton";
 
 const Panel = () => {
