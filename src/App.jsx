@@ -44,7 +44,7 @@ function App() {
             <Route path="AI_Radiologist/forgot-password" element={<ForgotPassword />} />
             <Route path="AI_Radiologist/Verify-Email" element={<VerifyEmail />} />
             <Route
-              path="reset-password/:uid/:token"
+              path="AI_Radiologist/reset-password/:uid/:token"
               element={<ResetPassword />}
             />
             <Route
@@ -58,7 +58,7 @@ function App() {
             />
             <Route path="AI_Radiologist/NavBar" element={<NavBar />} />
             <Route
-              path="Profile_User"
+              path="AI_Radiologist/Profile_User"
               element={
                 <ProtectedRoute>
                   <Profile_User />
