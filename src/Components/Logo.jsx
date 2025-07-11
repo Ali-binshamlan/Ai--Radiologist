@@ -6,7 +6,7 @@ const Logo = () => {
     <nav className="navbar navbar-light bg-light p-0">
       <div className="container">
         {/* Website logo */}
-        <Link className="" to="/AI_Radiologist">
+        <Link className="" to="/">
           <img style={{ width: "150px" }} src={logoNav} alt="" />
         </Link>
       </div>

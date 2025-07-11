@@ -38,7 +38,7 @@ const Sidebar = () => {
     >
       <div className="sidebar-panel d-flex flex-column justify-content-center align-items-center">
         <h1>{welcomeText}</h1>
-        <Link to="/AI_Radiologist">
+        <Link to="/">
           <img className="img-logo" width={250} src={LogoSidebar} alt="Logo" />
         </Link>
         <p className="text-center">
