@@ -34,6 +34,9 @@ const Upload = () => {
     const fetchOptions = async () => {
       try {
         const res = await axios.get(`${API_FETCH_OPTIONS}`, {
+          // headers: {
+          //   Authorization: `Bearer ${token}`
+          // },
         });
         setRadioOptions(res.data);
       } catch (err) {
