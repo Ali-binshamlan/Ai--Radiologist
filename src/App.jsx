@@ -37,18 +37,18 @@ function App() {
           <Route path="/">
             {/* الصفحة الرئيسية /AI_Radiologist */}
             <Route index element={<Home />} />
-            <Route path="Home" element={<Home />} />
-            <Route path="our-vision" element={<Home />} />
-            <Route path="Registration" element={<Registration />} />
-            <Route path="Login" element={<Login />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="Verify-Email" element={<VerifyEmail />} />
+            <Route path="AI_Radiologist/Home" element={<Home />} />
+            <Route path="AI_Radiologist/our-vision" element={<Home />} />
+            <Route path="AI_Radiologist/Registration" element={<Registration />} />
+            <Route path="AI_Radiologist/Login" element={<Login />} />
+            <Route path="AI_Radiologist/forgot-password" element={<ForgotPassword />} />
+            <Route path="AI_Radiologist/Verify-Email" element={<VerifyEmail />} />
             <Route
               path="reset-password/:uid/:token"
               element={<ResetPassword />}
             />
             <Route
-              path="Upload"
+              path="AI_Radiologist/Upload"
               element={
                 // <ProtectedRoute>
                 //   <Upload />
@@ -56,7 +56,7 @@ function App() {
                 <Upload />
               }
             />
-            <Route path="NavBar" element={<NavBar />} />
+            <Route path="AI_Radiologist/NavBar" element={<NavBar />} />
             <Route
               path="Profile_User"
               element={
@@ -66,7 +66,7 @@ function App() {
               }
             />
             <Route
-              path="Settings_User"
+              path="AI_Radiologist/Settings_User"
               element={
                 <ProtectedRoute>
                   <Settings_User />
@@ -76,16 +76,16 @@ function App() {
 
             {/* مسارات المشرف */}
             <Route element={<AdminRoute />}>
-              <Route path="AdminPanel" element={<AdminPanel />}>
+              <Route path="AI_Radiologist/AdminPanel" element={<AdminPanel />}>
                 <Route index element={<AdminDashboard />} />
-                <Route path="Users Admin" element={<UsersAdmin />} />
-                <Route path="Reports Admin" element={<ReportsAdmin />} />
-                <Route path="Models Admin" element={<Models />} />
-                <Route path="Files Admin" element={<FilesAdmin />} />
-                <Route path="Modalities Admin" element={<ModalitiesAdmin />} />
-                <Route path="Anatomies Admin" element={<AnatomiesAdmin />} />
+                <Route path="AI_Radiologist/Users Admin" element={<UsersAdmin />} />
+                <Route path="AI_Radiologist/Reports Admin" element={<ReportsAdmin />} />
+                <Route path="AI_Radiologist/Models Admin" element={<Models />} />
+                <Route path="AI_Radiologist/Files Admin" element={<FilesAdmin />} />
+                <Route path="AI_Radiologist/Modalities Admin" element={<ModalitiesAdmin />} />
+                <Route path="AI_Radiologist/Anatomies Admin" element={<AnatomiesAdmin />} />
                 <Route
-                  path="RadiologyDetails Admin"
+                  path="AI_Radiologist/RadiologyDetails Admin"
                   element={<RadiologyDetailsAdmin />}
                 />
               </Route>
