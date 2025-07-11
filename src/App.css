@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  width: 100%;
+  background-color: white;
+  overflow-x: hidden;
+  font-family: "WinkyRough", sans-serif;
+}
+
+html {
+  background-color: white;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+.bold-text {
+  font-family: "WinkyRough", sans-serif;
+  font-weight: bold;
+}
+
+.italic-text {
+  font-family: "WinkyRough", sans-serif;
+  font-style: italic;
+}
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WinkyRough";
+  src: url("/fonts/WinkyRough-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "boxicons";
+  src: url("../public/boxicons/fonts/boxicons.woff2") format("woff2"),
+    url("../public/boxicons/fonts/boxicons.woff") format("woff"),
+    url("../public/boxicons/fonts/boxicons.ttf") format("truetype"),
+    url("../public/boxicons/fonts/boxicons.eot") format("eot");
+
+  font-weight: normal;
+  font-style: normal;
+}
