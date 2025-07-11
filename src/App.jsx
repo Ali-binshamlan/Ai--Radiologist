@@ -34,7 +34,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* مسار رئيسي يحتوي على كل شيء تحت /AI_Radiologist */}
-          <Route path="/AI_Radiologist">
+          <Route path="/">
             {/* الصفحة الرئيسية /AI_Radiologist */}
             <Route index element={<Home />} />
             <Route path="Home" element={<Home />} />
