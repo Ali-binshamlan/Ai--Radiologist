@@ -75,21 +75,19 @@ function App() {
             />
 
             {/* مسارات المشرف */}
-            <Route element={<AdminRoute />}>
-              <Route path="AI_Radiologist/AdminPanel" element={<AdminPanel />}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="AI_Radiologist/UsersAdmin" element={<UsersAdmin />} />
-                <Route path="AI_Radiologist/ReportsAdmin" element={<ReportsAdmin />} />
-                <Route path="AI_Radiologist/ModelsAdmin" element={<Models />} />
-                <Route path="AI_Radiologist/FilesAdmin" element={<FilesAdmin />} />
-                <Route path="AI_Radiologist/ModalitiesAdmin" element={<ModalitiesAdmin />} />
-                <Route path="AI_Radiologist/AnatomiesAdmin" element={<AnatomiesAdmin />} />
-                <Route
-                  path="AI_Radiologist/AdminPanel/RadiologyDetailsAdmin"
-                  element={<RadiologyDetailsAdmin />}
-                />
-              </Route>
-            </Route>
+<Route element={<AdminRoute />}>
+  <Route path="AI_Radiologist/AdminPanel" element={<AdminPanel />}>
+    <Route index element={<AdminDashboard />} />
+    <Route path="UsersAdmin" element={<UsersAdmin />} />
+    <Route path="ReportsAdmin" element={<ReportsAdmin />} />
+    <Route path="ModelsAdmin" element={<Models />} />
+    <Route path="FilesAdmin" element={<FilesAdmin />} />
+    <Route path="ModalitiesAdmin" element={<ModalitiesAdmin />} />
+    <Route path="AnatomiesAdmin" element={<AnatomiesAdmin />} />
+    <Route path="RadiologyDetailsAdmin" element={<RadiologyDetailsAdmin />} />
+  </Route>
+</Route>
+
 
             {/* صفحة الخطأ لأي مسار غير معروف تحت /AI_Radiologist */}
             <Route path="*" element={<ErrorPage />} />
