@@ -78,14 +78,14 @@ function App() {
             <Route element={<AdminRoute />}>
               <Route path="AI_Radiologist/AdminPanel" element={<AdminPanel />}>
                 <Route index element={<AdminDashboard />} />
-                <Route path="AI_Radiologist/Users Admin" element={<UsersAdmin />} />
-                <Route path="AI_Radiologist/Reports Admin" element={<ReportsAdmin />} />
-                <Route path="AI_Radiologist/Models Admin" element={<Models />} />
-                <Route path="AI_Radiologist/Files Admin" element={<FilesAdmin />} />
-                <Route path="AI_Radiologist/Modalities Admin" element={<ModalitiesAdmin />} />
-                <Route path="AI_Radiologist/Anatomies Admin" element={<AnatomiesAdmin />} />
+                <Route path="AI_Radiologist/AdminPanel/Users Admin" element={<UsersAdmin />} />
+                <Route path="AI_Radiologist/AdminPanel/Reports Admin" element={<ReportsAdmin />} />
+                <Route path="AI_Radiologist/AdminPanel/Models Admin" element={<Models />} />
+                <Route path="AI_Radiologist/AdminPanel/Files Admin" element={<FilesAdmin />} />
+                <Route path="AI_Radiologist/AdminPanel/Modalities Admin" element={<ModalitiesAdmin />} />
+                <Route path="AI_Radiologist/AdminPanel/Anatomies Admin" element={<AnatomiesAdmin />} />
                 <Route
-                  path="AI_Radiologist/RadiologyDetails Admin"
+                  path="AI_Radiologist/AdminPanel/RadiologyDetails Admin"
                   element={<RadiologyDetailsAdmin />}
                 />
               </Route>
