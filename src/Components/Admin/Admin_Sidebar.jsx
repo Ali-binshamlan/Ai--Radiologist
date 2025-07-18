@@ -46,7 +46,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/UsersAdmin"
+          to="/AI_Radiologist/UsersAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-user fs-4 me-2"></i>
@@ -54,7 +54,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/ModelsAdmin"
+          to="/AI_Radiologist/ModelsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-layer fs-4 me-2"></i>
@@ -62,7 +62,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/FilesAdmin"
+          to="/AI_Radiologist/FilesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-file fs-4 me-2"></i>
@@ -70,7 +70,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/ModalitiesAdmin"
+          to="/AI_Radiologist/ModalitiesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-heart fs-4 me-2"></i>
@@ -78,14 +78,14 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/AnatomiesAdmin"
+          to="/AI_Radiologist/AnatomiesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-body fs-4 me-2"></i>
           <span>Anatomies</span>
         </Link>
         <Link
-          to="/AI_Radiologist/AdminPanel/RadiologyDetailsAdmin"
+          to="/AI_Radiologist/RadiologyDetailsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-health fs-4 me-2"></i>
@@ -93,7 +93,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/ReportsAdmin"
+          to="/AI_Radiologist/ReportsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-detail fs-4 me-2"></i>
