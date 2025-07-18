@@ -46,7 +46,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Users Admin"
+          to="/AI_Radiologist/AdminPanel/UsersAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-user fs-4 me-2"></i>
@@ -54,7 +54,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Models Admin"
+          to="/AI_Radiologist/AdminPanel/ModelsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-layer fs-4 me-2"></i>
@@ -62,7 +62,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Files Admin"
+          to="/AI_Radiologist/AdminPanel/FilesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-file fs-4 me-2"></i>
@@ -70,7 +70,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Modalities Admin"
+          to="/AI_Radiologist/AdminPanel/ModalitiesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-heart fs-4 me-2"></i>
@@ -78,14 +78,14 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Anatomies Admin"
+          to="/AI_Radiologist/AdminPanel/AnatomiesAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-body fs-4 me-2"></i>
           <span>Anatomies</span>
         </Link>
         <Link
-          to="/AI_Radiologist/AdminPanel/RadiologyDetails Admin"
+          to="/AI_Radiologist/AdminPanel/RadiologyDetailsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-health fs-4 me-2"></i>
@@ -93,7 +93,7 @@ const Admin_Sidebar = () => {
         </Link>
 
         <Link
-          to="/AI_Radiologist/AdminPanel/Reports Admin"
+          to="/AI_Radiologist/AdminPanel/ReportsAdmin"
           className="list-group-item d-flex align-items-center text-center"
         >
           <i className="bx bx-detail fs-4 me-2"></i>
