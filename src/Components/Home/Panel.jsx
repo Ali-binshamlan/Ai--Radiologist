@@ -4,6 +4,8 @@ import Image1 from "../../assets/Images/background.png";
 import Image2 from "../../assets/Images/spark,background.png";
 import "../../assets/Styling/panel.css";
 import UploadButton from "../UploadButton";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import radiology from "../../assets/Images/radiology.lottie";
 
 const Panel = () => {
   const { ref, inView } = useInView({
@@ -57,8 +59,12 @@ const Panel = () => {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <img id="Image2" src={Image2} alt="" />
-          <img id="Image1" src={Image1} alt="" />
+          <DotLottieReact
+            src={radiology}
+            loop
+            autoplay
+            style={{ width: "105%", height: "100%" }} // حدد الحجم اللي يناسبك
+          />
         </motion.div>
       </div>
     </motion.div>

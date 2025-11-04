@@ -52,6 +52,7 @@ const NavBar = () => {
     { name: "Our Vision", path: "/AI_Radiologist/Home" },
     { name: "Upload", path: "/AI_Radiologist/Upload" },
     { name: "How Use It", path: "/AI_Radiologist/Home" },
+    { name: "About", path: "/AI_Radiologist/Home" },
   ];
 
   return (
@@ -61,7 +62,7 @@ const NavBar = () => {
           <Logo />
         </Link>
 
-        <div className={`nav__menu mt-3 ${menuOpen ? "show-menu" : ""}`}>
+        <div className={`nav__menu mt-1${menuOpen ? "show-menu" : ""}`}>
           <ul className="nav__list">
             {navItems.map((item, index) => (
               <li key={index}>
@@ -80,7 +81,7 @@ const NavBar = () => {
           </div>
         </div>
 
-        <div className="nav__actions pt-2">
+        <div className="nav__actions ">
           {user ? (
             <div className="dropdown" ref={dropdownRef}>
               <div

@@ -45,6 +45,7 @@ img {
         padding-block: 4rem;
         z-index: 100;
         transition: top .4s;
+        background-color: red;
     }
 }
 
@@ -53,6 +54,21 @@ img {
     display: flex;
     flex-direction: column;
     row-gap: 2.5rem;
+
+    background-color: rgba(255, 255, 255, 0.15);
+    /* شفافية أفضل للزجاج */
+    backdrop-filter: blur(10px);
+    /* زيادة الـ blur لتأثير الزجاج */
+    -webkit-backdrop-filter: blur(10px);
+    /* دعم Safari */
+
+    padding: 12px;
+    border-radius: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* حدود شفافة خفيفة */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    /* ظل خفيف يعطي عمق */
 }
 
 .nav__link {
