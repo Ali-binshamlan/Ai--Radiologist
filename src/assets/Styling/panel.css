@@ -51,3 +51,9 @@
             width: 25%;
         }
 }
+/* إخفاء container-img على الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .container-img {
+        display: none;
+    }
+}

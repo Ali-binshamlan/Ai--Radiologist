@@ -1,25 +1,38 @@
+import { useState, useEffect } from "react";
 import X_ray from "../../assets/Images/FemaleDoctorholdingX-Ray.lottie";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function About() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // للتأكد من الحالة عند التحميل
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       style={{
         display: "flex",
+        flexWrap: "wrap",
         alignItems: "center",
         gap: "50px",
         padding: "50px",
       }}
     >
-      {/* الجزء الخاص بالأنيميشن */}
-      <div>
-        <DotLottieReact
-          src={X_ray}
-          loop
-          autoplay
-          style={{ width: "500px", height: "500px" }}
-        />
-      </div>
+      {/* الجزء الخاص بالأنيميشن يظهر فقط على الشاشات الكبيرة */}
+      {!isMobile && (
+        <div>
+          <DotLottieReact
+            src={X_ray}
+            loop
+            autoplay
+            style={{ width: "500px", height: "500px" }}
+          />
+        </div>
+      )}
 
       {/* الجزء الخاص بالنص */}
       <div style={{ maxWidth: "600px" }}>
