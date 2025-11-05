@@ -50,9 +50,7 @@ function App() {
             <Route
               path="AI_Radiologist/Upload"
               element={
-                <ProtectedRoute>
                   <Upload />
-                </ProtectedRoute>
                 // <Upload />
               }
             />
