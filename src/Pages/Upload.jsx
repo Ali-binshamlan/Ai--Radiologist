@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,10 +14,13 @@ const API_FETCH_OPTIONS = `${BASE_URL}/user/reports/options/`;
 
 const Upload = () => {
   const { token, user } = useAuth();
+  const fileInputRef = useRef(null);
+  const dropAreaRef = useRef(null);
 
   const [radioOptions, setRadioOptions] = useState([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [modelDescription, setModelDescription] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
 
   const [formData, setFormData] = useState({
     file1: null,
@@ -30,12 +33,14 @@ const Upload = () => {
     reportId: null,
   });
 
+  
+
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const res = await axios.get(`${API_FETCH_OPTIONS}`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         setRadioOptions(res.data);
@@ -49,10 +54,27 @@ const Upload = () => {
     fetchOptions();
   }, [token]);
 
+  // Drag and drop handlers
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileSelection(files[0]);
+    }
+  };
+
+  const handleFileSelection = (selectedFile) => {
     if (!selectedFile) return;
 
     if (selectedFile.size > 5 * 1024 * 1024) {
@@ -70,6 +92,11 @@ const Upload = () => {
       predictionResult: null,
       errorMessage: null,
     }));
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    handleFileSelection(selectedFile);
   };
 
   const handleChange = (event) => {
@@ -100,20 +127,12 @@ const Upload = () => {
       form.append("radio_modality", formData.type);
       form.append("body_ana", formData.bodyPart);
 
-const response = await axios.post(`${API_CREATE_REPORT}`, form, {
-  headers: {
-    "Content-Type": "multipart/form-data",
-    Authorization: `Bearer ${token}`,
-  },
-});
-
-setFormData((prev) => ({
-  ...prev,
-  predictionResult: response.data.report_details,
-  reportId: response.data.id,
-  loading: false,
-}));
-setModelDescription(response.data.model_description || "");
+      const response = await axios.post(`${API_CREATE_REPORT}`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setFormData((prev) => ({
         ...prev,
@@ -121,6 +140,7 @@ setModelDescription(response.data.model_description || "");
         reportId: response.data.id,
         loading: false,
       }));
+      setModelDescription(response.data.model_description || "");
     } catch (error) {
       console.error("Upload error:", error);
       console.log("Server response:", error.response?.data);
@@ -167,241 +187,515 @@ setModelDescription(response.data.model_description || "");
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      file1: null,
+      imagePreview1: null,
+      type: "",
+      bodyPart: "",
+      loading: false,
+      predictionResult: null,
+      errorMessage: null,
+      reportId: null,
+    });
+    setModelDescription("");
+  };
+
   return (
-    <div>
-      <NavBar />
-      <div className="upload-container d-flex flex-column align-items-center">
-        <div className="upload-box d-flex flex-column align-items-center mt-5">
-          <h3 className="upload-header">Upload Your Image</h3>
-
-          <form
-            onSubmit={handleSubmit}
-            className="d-flex flex-column align-items-center"
-          >
-            {/* Image Preview with Animation */}
-            <motion.div
-              key={formData.imagePreview1 || "default"}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="image-preview-container"
-            >
-              <img
-                src={formData.imagePreview1 || Image1}
-                alt="Preview 1"
-                className="upload-preview"
-              />
-            </motion.div>
-
-            {/* Upload Image */}
-            <input
-              type="file"
-              id="file-input-1"
-              hidden
-              onChange={handleFileChange}
-              accept="image/jpeg,image/png"
-            />
-            <label htmlFor="file-input-1" className="upload-label">
-              Choose File
-            </label>
-
-            {/* Modality Select */}
-            <select
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              className="upload-select"
-              disabled={formData.predictionResult !== null}
-            >
-              <option value="">
-                {loadingOptions ? "Loading modalities..." : "Select Modality"}
-              </option>
-              {radioOptions.map((modality) => (
-                <option key={modality.modality.id} value={modality.modality.id}>
-                  {modality.modality.name}
-                </option>
-              ))}
-            </select>
-
-            {/* Body Part Select with Animation */}
-            <AnimatePresence mode="wait">
-              {formData.type && (
-                <motion.div
-                  key={formData.type}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.3 }}
-                  className="w-100"
-                >
-                  <select
-                    name="bodyPart"
-                    value={formData.bodyPart}
-                    onChange={handleChange}
-                    className="upload-select"
-                    disabled={formData.predictionResult !== null}
-                  >
-                    <option value="">
-                      {loadingOptions
-                        ? "Loading regions..."
-                        : "Select Body Part"}
-                    </option>
-                    {radioOptions
-                      .find(
-                        (opt) => opt.modality.id === parseInt(formData.type)
-                      )
-                      ?.regions.map((region) => (
-                        <option key={region.id} value={region.id}>
-                          {region.name}
-                        </option>
-                      ))}
-                  </select>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Upload Button */}
-            <button
-              type="submit"
-              className={`upload-button mt-4 ${
-                formData.loading ||
-                !formData.file1 ||
-                !formData.type ||
-                !formData.bodyPart
-                  ? "disabled-button"
-                  : "enabled"
-              }`}
-              disabled={
-                formData.loading ||
-                !formData.file1 ||
-                !formData.type ||
-                !formData.bodyPart
-              }
-            >
-              {formData.loading ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Processing...
-                </>
-              ) : (
-                "Upload"
-              )}
-            </button>
-
-            {/* Error Message */}
-            {formData.errorMessage && (
-              <div className="alert alert-danger mt-3">
-                {formData.errorMessage}
-              </div>
-            )}
-          </form>
+    <div className="ai-radiologist-page">
+      {/* Animated Background */}
+      <div className="tech-background">
+        <div className="circuit-lines"></div>
+        <div className="data-points">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="data-point"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+              }}
+            ></div>
+          ))}
         </div>
+      </div>
 
-        {/* Report Section */}
-        {formData.predictionResult && (
-          <div
-            id="report-content"
-            className="report-container mt-4 p-4 bg-light rounded shadow-sm w-75 border border-secondary-subtle"
-          >
-            <div className="mb-4 border-bottom pb-3">
-              <h4 className="fw-bold text-primary">Medical Report</h4>
-              <p>
-                <strong>Name:</strong> {user?.first_name} {user?.last_name}
-              </p>
-              <p>
-                <strong>Email:</strong> {user?.email || "N/A"}
-              </p>
-              <p>
-                <strong>Date:</strong> {new Date().toLocaleDateString()}
-              </p>
-            </div>
+      <NavBar />
 
-            <div className="container mt-4 mb-4">
-              <div className="card shadow-sm">
-                <div className="card-body">
-                  <h5 className="text-primary mb-3">Technical Description</h5>
-                  <p>
-                    A{" "}
-                    {
-                      radioOptions.find(
-                        (opt) => opt.modality.id === parseInt(formData.type)
-                      )?.modality.name
-                    }{" "}
-                    was performed using a standard{" "}
-                    {radioOptions
-                      .find(
-                        (opt) => opt.modality.id === parseInt(formData.type)
-                      )
-                      ?.modality.name.toLowerCase()}{" "}
-                    machine. The{" "}
-                    {radioOptions
-                      .find(
-                        (opt) => opt.modality.id === parseInt(formData.type)
-                      )
-                      ?.regions.find(
-                        (region) => region.id === parseInt(formData.bodyPart)
-                      )
-                      ?.name.toLowerCase()}{" "}
-                    was imaged in both anterior and posterior positions.
-                  </p>
-
-                  <h5 style={{ color: "red" }} className="mt-4">
-                    Results
-                  </h5>
-                  {formData.predictionResult.split("\n").map((line, index) => {
-                    // Try to capture "Heading:" at the start, plus the rest of the line
-                    const match = line.match(/^([^:]+:)(.*)$/);
-                    if (match) {
-                      const [, heading, rest] = match;
-                      return (
-                        <p key={index}>
-                          <strong>{heading}</strong>
-                          {rest}
-                        </p>
-                      );
-                    } else {
-                      // No leading colon-terminated heading
-                      return <p key={index}>{line}</p>;
-                    }
-                  })}
-
-                  <h5 className="text-info mt-4">Recommendations</h5>
-                  <ol>
-                    <li>Further tests are advised.</li>
-                    <li>Follow-up with a physician is needed.</li>
-                  </ol>
-
-                 {modelDescription && (
-  <>
-    <h5 className="text-secondary mt-4">Model Description</h5>
-    <p>{modelDescription}</p>
-  </>
-)}
-
-                  <h5 className="text-info mt-4">Additional Notes</h5>
-                  <ul>
-                    <li>AI model still under development.</li>
-                    <li>Human evaluation required.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="d-flex align-items-center justify-content-center">
-              <button
-                onClick={handleDownloadPDF}
-                className="btn btn-outline-primary mt-3"
+      <motion.div
+        className="upload-container"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="col-xl-10">
+              {/* Header Section */}
+              <motion.div
+                className="page-header text-center mb-5"
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
               >
-                <i className="bi bi-download me-2"></i> Download PDF Report
-              </button>
+                <h1 className="display-4 fw-bold gradient-text">
+                  AI Radiologist Assistant
+                </h1>
+                
+              </motion.div>
+
+              <div className="row justify-content-center">
+                {/* Upload Section */}
+                <motion.div
+                  className="col-lg-6 mb-5"
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <div className="upload-card">
+                    <div className="card-header">
+                      <h3 className="card-title">
+                        <i className="bi bi-cloud-upload-fill me-2"></i>
+                        Upload Medical Image
+                      </h3>
+                      <p className="card-subtitle">
+                        Supported formats: JPEG, PNG (Max 5MB)
+                      </p>
+                    </div>
+
+                    <div className="card-body">
+                      <form onSubmit={handleSubmit}>
+                        {/* Drag & Drop Area */}
+                        <motion.div
+                          className={`drop-area ${
+                            isDragging ? "dragging" : ""
+                          } ${formData.imagePreview1 ? "has-image" : ""}`}
+                          ref={dropAreaRef}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            hidden
+                            onChange={handleFileChange}
+                            accept="image/jpeg,image/png"
+                          />
+
+                          <AnimatePresence mode="wait">
+                            {formData.imagePreview1 ? (
+                              <motion.div
+                                key="preview"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                className="image-preview-wrapper"
+                              >
+                                <img
+                                  src={formData.imagePreview1}
+                                  alt="Medical scan preview"
+                                  className="upload-preview"
+                                />
+                                <div className="preview-overlay">
+                                  <i className="bi bi-arrow-repeat"></i>
+                                  <span>Click to change image</span>
+                                </div>
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                key="placeholder"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="drop-placeholder"
+                              >
+                                <i className="bi bi-file-earmark-medical"></i>
+                                <h4>Drop medical image here</h4>
+                                <p>or click to browse files</p>
+                                <div className="supported-formats">
+                                  <span className="format-tag">CT Scan</span>
+                                  <span className="format-tag">X-Ray</span>
+                                  <span className="format-tag">MRI</span>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+
+                        {/* Analysis Parameters */}
+                        <div className="analysis-params mt-4">
+                          <div className="row g-3">
+                            <div className="col-md-6">
+                              <label className="form-label">
+                                <i className="bi bi-cpu me-2"></i>
+                                Imaging Modality
+                              </label>
+                              <select
+                                name="type"
+                                value={formData.type}
+                                onChange={handleChange}
+                                className="form-select modern-select"
+                                disabled={formData.predictionResult !== null}
+                              >
+                                <option value="">
+                                  {loadingOptions
+                                    ? "Loading modalities..."
+                                    : "Select Modality"}
+                                </option>
+                                {radioOptions.map((modality) => (
+                                  <option
+                                    key={modality.modality.id}
+                                    value={modality.modality.id}
+                                  >
+                                    {modality.modality.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <AnimatePresence mode="wait">
+                              {formData.type && (
+                                <motion.div
+                                  className="col-md-6"
+                                  initial={{ opacity: 0, x: 20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0, x: -20 }}
+                                >
+                                  <label className="form-label">
+                                    <i className="bi bi-body-text me-2"></i>
+                                    Body Region
+                                  </label>
+                                  <select
+                                    name="bodyPart"
+                                    value={formData.bodyPart}
+                                    onChange={handleChange}
+                                    className="form-select modern-select"
+                                    disabled={
+                                      formData.predictionResult !== null
+                                    }
+                                  >
+                                    <option value="">
+                                      {loadingOptions
+                                        ? "Loading regions..."
+                                        : "Select Body Part"}
+                                    </option>
+                                    {radioOptions
+                                      .find(
+                                        (opt) =>
+                                          opt.modality.id ===
+                                          parseInt(formData.type)
+                                      )
+                                      ?.regions.map((region) => (
+                                        <option
+                                          key={region.id}
+                                          value={region.id}
+                                        >
+                                          {region.name}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="action-buttons mt-4">
+                          <motion.button
+                            type="submit"
+                            className={`btn btn-primary analyze-btn ${
+                              formData.loading ? "loading" : ""
+                            }`}
+                            disabled={
+                              formData.loading ||
+                              !formData.file1 ||
+                              !formData.type ||
+                              !formData.bodyPart
+                            }
+                            whileHover={{
+                              scale:
+                                formData.loading ||
+                                !formData.file1 ||
+                                !formData.type ||
+                                !formData.bodyPart
+                                  ? 1
+                                  : 1.05,
+                              boxShadow:
+                                formData.loading ||
+                                !formData.file1 ||
+                                !formData.type ||
+                                !formData.bodyPart
+                                  ? "none"
+                                  : "0 10px 25px rgba(0, 123, 255, 0.3)",
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            {formData.loading ? (
+                              <>
+                                <motion.span
+                                  animate={{ rotate: 360 }}
+                                  transition={{
+                                    duration: 1,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                  }}
+                                  className="spinner-border spinner-border-sm me-2"
+                                ></motion.span>
+                                AI Analyzing...
+                              </>
+                            ) : (
+                              <>
+                                <i className="bi bi-robot me-2"></i>
+                                Start AI Analysis
+                              </>
+                            )}
+                          </motion.button>
+
+                          {formData.predictionResult && (
+                            <motion.button
+                              type="button"
+                              className="btn btn-outline-light ms-2"
+                              onClick={resetForm}
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <i className="bi bi-plus-circle me-2"></i>
+                              New Analysis
+                            </motion.button>
+                          )}
+                        </div>
+
+                        {/* Error Message */}
+                        <AnimatePresence>
+                          {formData.errorMessage && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="alert alert-danger mt-3"
+                            >
+                              <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                              {formData.errorMessage}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </form>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Report Section */}
+                <motion.div
+                  className="col-lg-6"
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <AnimatePresence>
+                    {formData.predictionResult ? (
+                      <motion.div
+                        className="report-card"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 30,
+                        }}
+                      >
+                        <div className="card-header">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <h3 className="card-title">
+                              <i className="bi bi-file-earmark-medical-fill me-2"></i>
+                              AI Diagnostic Report
+                            </h3>
+                            <div className="report-badge">AI Generated</div>
+                          </div>
+                          <div className="patient-info">
+                            <div className="row">
+                              <div className="col-md-6">
+                                <strong>Patient:</strong> {user?.first_name}{" "}
+                                {user?.last_name}
+                              </div>
+                              <div className="col-md-6">
+                                <strong>Date:</strong>{" "}
+                                {new Date().toLocaleDateString()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="card-body">
+                          {/* Technical Details */}
+                          <div className="report-section">
+                            <h5 className="section-title">
+                              <i className="bi bi-gear-fill me-2"></i>
+                              Technical Details
+                            </h5>
+                            <p>
+                              A{" "}
+                              {
+                                radioOptions.find(
+                                  (opt) =>
+                                    opt.modality.id === parseInt(formData.type)
+                                )?.modality.name
+                              }
+                              examination was performed focusing on the{" "}
+                              {radioOptions
+                                .find(
+                                  (opt) =>
+                                    opt.modality.id === parseInt(formData.type)
+                                )
+                                ?.regions.find(
+                                  (region) =>
+                                    region.id === parseInt(formData.bodyPart)
+                                )
+                                ?.name.toLowerCase()}{" "}
+                              region. Images were acquired following standard
+                              clinical protocols.
+                            </p>
+                          </div>
+
+                          {/* AI Findings */}
+                          <div className="report-section">
+                            <h5 className="section-title findings-title">
+                              <i className="bi bi-clipboard2-pulse-fill me-2"></i>
+                              AI Analysis Findings
+                            </h5>
+                            <div className="findings-content">
+                              {formData.predictionResult
+                                .split("\n")
+                                .map((line, index) => {
+                                  const match = line.match(/^([^:]+:)(.*)$/);
+                                  if (match) {
+                                    const [, heading, rest] = match;
+                                    return (
+                                      <div key={index} className="finding-item">
+                                        <strong className="finding-heading">
+                                          {heading}
+                                        </strong>
+                                        {rest}
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div key={index} className="finding-item">
+                                        {line}
+                                      </div>
+                                    );
+                                  }
+                                })}
+                            </div>
+                          </div>
+
+                          {/* Model Info */}
+                          {modelDescription && (
+                            <div className="report-section">
+                              <h5 className="section-title">
+                                <i className="bi bi-info-circle-fill me-2"></i>
+                                AI Model Information
+                              </h5>
+                              <p>{modelDescription}</p>
+                            </div>
+                          )}
+
+                          {/* Recommendations */}
+                          <div className="report-section">
+                            <h5 className="section-title">
+                              <i className="bi bi-lightbulb-fill me-2"></i>
+                              Clinical Recommendations
+                            </h5>
+                            <div className="recommendations">
+                              <div className="recommendation-item">
+                                <i className="bi bi-check-circle-fill text-success me-2"></i>
+                                Consult with a qualified radiologist for
+                                comprehensive evaluation
+                              </div>
+                              <div className="recommendation-item">
+                                <i className="bi bi-check-circle-fill text-success me-2"></i>
+                                Consider follow-up imaging if clinically
+                                indicated
+                              </div>
+                              <div className="recommendation-item">
+                                <i className="bi bi-check-circle-fill text-success me-2"></i>
+                                Correlation with patient history and physical
+                                examination recommended
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Download Button */}
+                          <div className="text-center mt-4">
+                            <motion.button
+                              onClick={handleDownloadPDF}
+                              className="btn btn-success download-report-btn"
+                              whileHover={{
+                                scale: 1.05,
+                                boxShadow: "0 8px 20px rgba(40, 167, 69, 0.3)",
+                              }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <i className="bi bi-download me-2"></i>
+                              Download Full Report (PDF)
+                            </motion.button>
+                          </div>
+
+                          {/* Disclaimer */}
+                          <div className="disclaimer mt-4">
+                            <small className="text-muted">
+                              <i className="bi bi-exclamation-triangle me-1"></i>
+                              This AI-generated report is for assistance
+                              purposes only and should be interpreted by
+                              qualified medical professionals.
+                            </small>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        className="placeholder-card"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <div className="placeholder-content">
+                          <i className="bi bi-graph-up-arrow"></i>
+                          <h4>AI Analysis Report</h4>
+                          <p>
+                            Upload a medical image and start analysis to see the
+                            AI diagnostic report here.
+                          </p>
+                          <div className="placeholder-features">
+                            <div className="feature">
+                              <i className="bi bi-lightning-charge-fill"></i>
+                              <span>Fast Analysis</span>
+                            </div>
+                            <div className="feature">
+                              <i className="bi bi-shield-check"></i>
+                              <span>Secure & Private</span>
+                            </div>
+                            <div className="feature">
+                              <i className="bi bi-graph-up"></i>
+                              <span>High Accuracy</span>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

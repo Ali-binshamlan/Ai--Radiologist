@@ -4,6 +4,7 @@ import Panel from "../Components/Home/Panel";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Home/Footer";
 import About from "../Components/Home/About";
+import OurServices from "../Components/Home/Services";
 
 
 const Home = () => {
@@ -11,9 +12,12 @@ const Home = () => {
     <div>
       <NavBar />
       <Panel />
-      <About/>
+      <About />
       <OurVision />
-      <HowUseIt />
+      <OurServices/>
+      <div className="mt-5">
+        <HowUseIt />
+      </div>
       <Footer />
     </div>
   );
