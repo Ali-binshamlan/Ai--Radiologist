@@ -45,10 +45,25 @@ img {
         padding-block: 4rem;
         z-index: 100;
         transition: top .4s;
-        background-color: red;
+        background-color: rgb(255, 255, 255);
     }
 }
+/* يظهر فقط على الجوال */
+@media screen and (min-width: 1200px) {
+    .nav__item-register {
+        display: none;
+    }
+}
+.nav__link_r{
+    color: #fff;
+    background-color: black;
 
+}
+.nav__item-register{
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
+}
 .nav__list {
     text-align: center;
     display: flex;

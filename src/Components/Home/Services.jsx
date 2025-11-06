@@ -378,6 +378,7 @@ const ServicesWrapper = styled.section`
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: 1rem;
+      justify-content: center;
     }
 
     .section-subtitle {
