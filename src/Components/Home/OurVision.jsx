@@ -78,7 +78,7 @@ const OurVision = () => {
               threshold: 0.1,
             });
 
-            const layerOffset = (index - activeLayer) * 150;
+            const layerOffset = (index - activeLayer) * 190;
             const zIndex = 10 - Math.abs(index - activeLayer);
             const scale = 1 - Math.abs(index - activeLayer) * 0.15;
             const opacity = 1 - Math.abs(index - activeLayer) * 0.3;
