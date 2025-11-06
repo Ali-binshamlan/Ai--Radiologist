@@ -242,7 +242,6 @@ img {
 
     .nav {
         height:60px;
-        column-gap: 4rem;
     }
 
     .nav__toggle{
