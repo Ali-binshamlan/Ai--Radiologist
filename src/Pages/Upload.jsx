@@ -3,7 +3,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
-import Image1 from "../assets/Images/image-upload.png";
 import "../assets/Styling/Upload.css";
 import NavBar from "../Components/NavBar";
 import { useAuth } from "../context/AuthContext";
@@ -232,18 +231,7 @@ const Upload = () => {
         <div className="container-fluid">
           <div className="row justify-content-center">
             <div className="col-xl-10">
-              {/* Header Section */}
-              <motion.div
-                className="page-header text-center mb-5"
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
-                <h1 className="display-4 fw-bold gradient-text">
-                  AI Radiologist Assistant
-                </h1>
-                
-              </motion.div>
+              
 
               <div className="row justify-content-center">
                 {/* Upload Section */}
